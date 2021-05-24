@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "ng-sis-pre"
+  },
+  "targets": {
+    "ng-sis-pre": {
+      "hosting": {
+        "mixquia": [
+          "ng-sis-pre"
+        ]
+      }
+    }
+  }
+}

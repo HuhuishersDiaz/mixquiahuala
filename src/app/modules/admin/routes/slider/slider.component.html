@@ -1,0 +1,136 @@
+<!-- Button trigger modal -->
+<div style="display: flex; justify-content: space-between">
+  <h5>Informacion principal( noticias , blogs ,convocatorias)</h5>
+  <button
+    type="button"
+    class="btn btn-primary"
+    data-toggle="modal"
+    data-target="#modSlides"
+  >
+    Nueva
+  </button>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modSlides"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modSlidesLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modSlidesLabel">
+          {{ action }} Slider principal
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="frmNewSlider" (ngSubmit)="newSlider()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="">Titulo</label>
+            <input
+              type="text"
+              formControlName="title"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="">Imagen de Presentación</label>
+            <app-file-upload
+              formControlName="image"
+              [reset]="reset"
+            ></app-file-upload>
+            <!-- <input type="file" class="form-control" required /> -->
+            <!-- (change)="cambioArchivo($event)" -->
+          </div>
+          <div class="form-group">
+            <label for="">Descripcion Corta</label>
+            <textarea
+              formControlName="description"
+              class="form-control"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="">url</label>
+            <input
+              type="text"
+              formControlName="link"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6" *ngFor="let item of convocatorias$ | async">
+      <article class="entry">
+        <div
+          class="btn-group float-right"
+          role="group"
+          aria-label="Basic example"
+          style="position: absolute; right: 3%"
+        >
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="Edit(item.payload.doc.id, item.payload.doc.data())"
+          >
+            Editar
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="delete(item.payload.doc.id)"
+          >
+            Eliminar
+          </button>
+          <!-- <button type="button" class="btn btn-secondary">Right</button> -->
+        </div>
+        <div class="entry-img">
+          <img
+            [src]="item.payload.doc.data().urlImage"
+            alt=""
+            class="img-fluid"
+            style="min-height: 150px"
+          />
+        </div>
+
+        <h2 class="entry-title">
+          <a href="blog-single.html">{{ item.payload.doc.data().title }}</a>
+        </h2>
+        <div class="entry-content">
+          <p>
+            {{ item.payload.doc.data().description }}
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

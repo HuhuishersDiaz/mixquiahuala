@@ -1,0 +1,90 @@
+<header id="header">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-brand logo mr-auto">
+      <h1 class="text-light">
+        <a routerLink="index"><span>MIXQUIAHUALA</span></a>
+      </h1>
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto nav-menu justify-content-end">
+        <li routerLinkActive="active">
+          <a
+            routerLink="/inicio"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            >Inicio</a
+          >
+        </li>
+        <li routerLinkActive="active">
+          <a
+            routerLink="/convocatorias"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            >Convocatorias</a
+          >
+        </li>
+        <li routerLinkActive="active">
+          <a
+            routerLink="/talleres"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            >Talleres y Conferencias
+          </a>
+        </li>
+        <!-- <li routerLinkActive="active">
+            <a routerLink="/entrevistas">Entrevistas </a>
+          </li> -->
+        <li routerLinkActive="active">
+          <a
+            routerLink="/galeria"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            >Galeria
+          </a>
+        </li>
+        <li routerLinkActive="active">
+          <a
+            routerLink="/servicios"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            >Servicios y Ayuda
+          </a>
+        </li>
+        <li
+          routerLinkActive="active"
+          *ngIf="this.isLogin$ | async as login; else login"
+        >
+          <a
+            routerLink="/admin"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            >Administrador</a
+          >
+        </li>
+        <ng-template #login>
+          <li routerLinkActive="active">
+            <a
+              routerLink="/auth/login"
+              data-toggle="collapse"
+              data-target=".navbar-collapse"
+              >Login</a
+            >
+          </li>
+        </ng-template>
+      </ul>
+    </div>
+  </nav>
+</header>
+<!-- End Header -->

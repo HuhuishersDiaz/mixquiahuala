@@ -1,0 +1,38 @@
+<div class="wrapper">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="first">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1024px-User_icon_2.svg.png"
+        id="icon"
+        alt="User Icon"
+      />
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="frmLogin" (ngSubmit)="login()" class="container">
+      <div class="form-group">
+        <label for="">Usuario</label>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="user"
+          placeholder="Usuario"
+        />
+      </div>
+      <div class="form-group">
+        <label for="">Contraseña</label>
+        <input
+          class="form-control"
+          formControlName="password"
+          placeholder="Contraseña"
+          type="password"
+        />
+      </div>
+
+      <input type="submit" class="fourth" value="Entrar" />
+    </form>
+  </div>
+</div>

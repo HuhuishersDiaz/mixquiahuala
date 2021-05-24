@@ -1,0 +1,120 @@
+allwods
+<div class="row">
+  <div class="col-lg-12 entries row">
+    <div class="col-6">
+      <article class="entry">
+        <div class="entry-img">
+          <img
+            src="/assets/img/alerta-amber-1-1.jpg"
+            alt=""
+            class="img-fluid"
+            loading="lazy"
+          />
+        </div>
+
+        <h2 class="entry-title">
+          <a href="blog-single.html">Ficha de busqueda</a>
+        </h2>
+
+        <div class="entry-meta">
+          <ul>
+            <li class="d-flex align-items-center">
+              <i class="icofont-user"></i>
+              <a>imm@mixquiahuala.com</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="entry-content">
+          <p>
+            Realiza tu ficha de busqueda en instantes con ayuda de esta
+            herramienta
+          </p>
+          <div class="read-more">
+            <a routerLink="/servicios/ver/ficha_de_busqueda">Realizar</a>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="col-6">
+      <article class="entry">
+        <div class="entry-img">
+          <img
+            src="/assets/img/injuve.jpg"
+            alt=""
+            class="img-fluid"
+            loading="lazy"
+          />
+        </div>
+
+        <h2 class="entry-title">
+          <a routerLink="/servicios/ver/registro_injuve"
+            >Registro de jovenes
+          </a>
+        </h2>
+
+        <div class="entry-meta">
+          <ul>
+            <li class="d-flex align-items-center">
+              <i class="icofont-user"></i>
+              <a>imm@mixquiahuala.com</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="entry-content">
+          <p>
+            Realiza tu ficha de busqueda en instantes con ayuda de esta
+            herramienta
+          </p>
+          <div class="read-more">
+            <a routerLink="/servicios/ver/registro_injuve">Realizar</a>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="col-6" *ngFor="let item of item$ | async">
+      <article class="entry">
+        <div class="entry-img">
+          <img [src]="item.urlImage" alt="" class="img-fluid" loading="lazy" />
+        </div>
+
+        <h2 class="entry-title">
+          <a href="blog-single.html">{{ item.title }}</a>
+        </h2>
+
+        <div class="entry-meta">
+          <ul>
+            <li class="d-flex align-items-center">
+              <i class="icofont-user"></i>
+              <a>{{ item.user }}</a>
+            </li>
+            <li class="d-flex align-items-center">
+              <i class="icofont-wall-clock"></i>
+              <a href="blog-single.html"
+                ><time datetime="2020-01-01">{{ item.endDate }}</time></a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="entry-content">
+          <p>
+            Aspernatur rerum perferendis et sint. Voluptates cupiditate voluptas
+            atque quae. Rem veritatis rerum enim et autem. Saepe atque cum
+            eligendi eaque iste omnis a qui. Quia sed sunt. Ea asperiores
+            expedita et et delectus voluptates rerum. Id saepe ut itaque quod
+            qui voluptas nobis porro rerum. Quam quia nesciunt qui aut est non
+            omnis. Inventore occaecati et quaerat magni itaque nam voluptas.
+            Voluptatem ducimus sint id earum ut nesciunt sed corrupti nemo.
+          </p>
+          <div class="read-more">
+            <a href="blog-single.html">Read More</a>
+          </div>
+        </div>
+      </article>
+    </div>
+    <!-- End blog entry -->
+  </div>
+  <!-- End blog entries list -->
+</div>

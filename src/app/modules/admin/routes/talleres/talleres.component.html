@@ -1,0 +1,105 @@
+<!-- Button trigger modal -->
+<div style="display: flex; justify-content: space-between">
+  <h5>Listado de talleres y conferencias activas</h5>
+  <button
+    type="button"
+    class="btn btn-primary"
+    data-toggle="modal"
+    data-target="#modTalleres"
+  >
+    Nueva
+  </button>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modTalleres"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modTalleresLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modTalleresLabel">Datos Convocatoria</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="frmnewTaller" (ngSubmit)="newTaller()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="">Nombre Convocatoria</label>
+            <input
+              type="text"
+              formControlName="title"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="">Imagen de Precentación</label>
+            <input
+              type="file"
+              formControlName="image"
+              class="form-control"
+              (change)="cambioArchivo($event)"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="">Imagen de Precentación</label>
+            <textarea
+              formControlName="description"
+              class="form-control"
+              required
+            ></textarea>
+          </div>
+
+          <div class="editor">
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+            </ngx-editor-menu>
+            <ngx-editor [editor]="editor" formControlName="editorContent">
+            </ngx-editor>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6" *ngFor="let item of talleres$ | async">
+      <article class="entry">
+        <div class="entry-img">
+          <img [src]="item.urlImage" alt="" class="img-fluid" />
+        </div>
+
+        <h2 class="entry-title">
+          <a href="blog-single.html">{{ item.title }}</a>
+        </h2>
+        <div class="entry-content">
+          <p>
+            {{ item.description }}
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

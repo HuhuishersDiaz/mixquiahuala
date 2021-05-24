@@ -1,0 +1,312 @@
+<div
+  *ngIf="serviceID === 'ficha_de_busqueda'; then ficha_de_busqueda; else otros"
+></div>
+<ng-template #ficha_de_busqueda>
+  <!-- <div class="container">
+    <div>
+      <h2>Angular HTML To PDF Generator Example - ItSolutionStuff.com</h2>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Website</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hardik</td>
+            <td>Savani</td>
+            <td>itsolutionstuff.com</td>
+          </tr>
+          <tr>
+            <td>Vimal</td>
+            <td>Kashiyani</td>
+            <td>hdtuto.com</td>
+          </tr>
+          <tr>
+            <td>Harshad</td>
+            <td>Pathak</td>
+            <td>nicesnippets.com</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-primary" (click)="downloadAsPDF()">
+      Export To PDF
+    </button>
+  </div> -->
+
+  <form
+    id="pdfTable"
+    #pdfTable
+    [formGroup]="frmFicha"
+    (ngSubmit)="GenerarFicha()"
+  >
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label>Imagen</label>
+        <input formControlName="Imagen" type="file" class="form-control" />
+        <div class="text-center">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mixquiahuala%2C_palacio_municipal.JPG/375px-Mixquiahuala%2C_palacio_municipal.JPG"
+            class="rounded-circle"
+            width="300"
+          />
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input formControlName="Nombre" type="text" class="form-control" />
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Edad</label>
+            <input formControlName="Edad" type="number" class="form-control" />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputPassword4">FECHA DE EXTRAVÍO /SUSTRACCIÓN</label>
+            <input
+              formControlName="FECHA_DE_EXTRAVÍO"
+              type="datetime-local"
+              class="form-control"
+              id="inputPassword4"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tipo de echo</label>
+          <input
+            formControlName="Tipo_de_echo"
+            type="text"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Lugar de los hechos</label>
+          <input
+            formControlName="Lugar_de_loshechos"
+            type="text"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>SEÑAS PARTICULARES </label>
+          <input
+            formControlName="SENAS_PARTICULARES"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">COMPLEXIÓN</label>
+        <input type="text" class="form-control" formControlName="COMPLEXIÓN" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">ESTATURA</label>
+        <input type="text" class="form-control" formControlName="ESTATURA" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">TEZ</label>
+        <input type="text" class="form-control" formControlName="TEZ" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">CARA</label>
+        <input type="text" class="form-control" formControlName="CARA" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">FRENTE</label>
+        <input type="text" class="form-control" formControlName="FRENTE" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">NARIZ</label>
+        <input type="text" class="form-control" formControlName="NARIZ" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">BOCA</label>
+        <input type="text" class="form-control" formControlName="BOCA" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">LABIOS</label>
+        <input type="text" class="form-control" formControlName="LABIOS" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">CEJAS</label>
+        <input type="text" class="form-control" formControlName="CEJAS" />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">MENTÓN</label>
+        <input type="text" class="form-control" formControlName="MENTÓN" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">COLOR DE OJOS </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="COLOR_DE_OJOS"
+        />
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">TIPO Y COLOR DE CABELLO</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="TIPO_Y_COLOR_DE_CABELL"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>ROPA QUE VESTIA </label>
+      <input
+        formControlName="ROPA_QUE_VESTIA"
+        type="text"
+        class="form-control"
+      />
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">OBSERVACIONES O HECHOS </label>
+        <textarea
+          formControlName="OBSERVACIONES_O_HECHOS"
+          name=""
+          id=""
+          cols="30"
+          rows="3"
+          class="form-control"
+        ></textarea>
+      </div>
+      <div
+        class="form-group col-md-6"
+        style="
+          display: flex;
+          flex-direction: column;
+          align-content: space-around;
+          justify-content: flex-end;
+          flex-wrap: wrap;
+        "
+      >
+        <p>
+          AYUDANOS A ENCONCONTRARLA <br />
+          ¡TU LLAMADA SERÁ ANÓNIMA!
+        </p>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign in</button>
+  </form>
+</ng-template>
+<ng-template #otros>
+  <div
+    *ngIf="serviceID === 'registro_injuve'; then registro_injuve; else otros"
+  ></div>
+
+  <ng-template #registro_injuve>
+    <form [formGroup]="frmRegInjuve" (ngSubmit)="regInjuve()">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Imagen</label>
+          <input type="file" class="form-control" formControlName="Imagen" />
+          <div class="text-center">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mixquiahuala%2C_palacio_municipal.JPG/375px-Mixquiahuala%2C_palacio_municipal.JPG"
+              class="rounded-circle"
+              width="300"
+            />
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" class="form-control" formControlName="Nombre" />
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Apellido Paterno</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Apellido_Paterno"
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">Apellido Materno</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Apellido_Materno"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Direccion</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="Direccion"
+            />
+          </div>
+          <div class="form-group">
+            <label>CURP</label>
+            <input type="text" class="form-control" formControlName="CURP" />
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Edad</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="Edad"
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">Genero</label>
+              <select class="form-control" formControlName="Genero">
+                <option value="hombre">Hombre</option>
+                <option value="mujer">Mujer</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Numero Telefonico</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="Telefonico"
+              />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">Email </label>
+              <input
+                type="email"
+                class="form-control"
+                formControlName="Email"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+  </ng-template>
+  <ng-template #otros>
+    <!-- <div [innerHTML]="bodyHtml"></div> -->
+  </ng-template>
+</ng-template>
