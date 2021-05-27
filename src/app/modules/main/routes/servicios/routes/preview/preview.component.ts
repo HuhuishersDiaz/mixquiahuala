@@ -6,6 +6,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { jsPDF } from 'jspdf';
+import { finalize } from 'rxjs/operators';
+import { LoadingService } from 'src/app/core/services/loading.service';
 
 @Component({
   selector: 'app-preview',
@@ -17,23 +19,25 @@ export class PreviewComponent implements OnInit {
 
   @ViewChild('pdfTable', { static: false })
   pdfTable!: ElementRef;
+  nombreArchivo: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private db: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private loadService: LoadingService
   ) {}
 
   frmFicha = new FormGroup({
     Imagen: new FormControl(),
     Nombre: new FormControl(),
     Edad: new FormControl(),
-    FECHA_DE_EXTRAVÍO: new FormControl(),
+    FECHA_DE_EXTRAVIO: new FormControl(),
     Tipo_de_echo: new FormControl(),
     Lugar_de_loshechos: new FormControl(),
     SENAS_PARTICULARES: new FormControl(),
-    COMPLEXIÓN: new FormControl(),
+    COMPLEXION: new FormControl(),
     ESTATURA: new FormControl(),
     TEZ: new FormControl(),
     CARA: new FormControl(),
@@ -42,7 +46,7 @@ export class PreviewComponent implements OnInit {
     BOCA: new FormControl(),
     LABIOS: new FormControl(),
     CEJAS: new FormControl(),
-    MENTÓN: new FormControl(),
+    MENTON: new FormControl(),
     COLOR_DE_OJOS: new FormControl(),
     TIPO_Y_COLOR_DE_CABELL: new FormControl(),
     ROPA_QUE_VESTIA: new FormControl(),
@@ -51,8 +55,6 @@ export class PreviewComponent implements OnInit {
   frmRegInjuve = new FormGroup({
     Imagen: new FormControl('', Validators.required),
     Nombre: new FormControl('', Validators.required),
-    Apellido_Paterno: new FormControl('', Validators.required),
-    Apellido_Materno: new FormControl('', Validators.required),
     Direccion: new FormControl('', Validators.required),
     CURP: new FormControl('', Validators.required),
     Edad: new FormControl('', Validators.required),
@@ -113,5 +115,36 @@ export class PreviewComponent implements OnInit {
     data.image = null;
 
     newRegistro.set(data);
+  }
+
+  public cambioArchivo(event: any) {
+    this.loadService.loading$.emit({
+      active: true,
+      text: 'Cargando imagen ...',
+    });
+    var n = Date.now();
+    const file = event.target.files[0];
+    const filePath = `registros/${n}`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(`registros/${n}`, file);
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          const downloadURL = fileRef.getDownloadURL();
+          downloadURL.subscribe((url: any) => {
+            if (url) {
+              this.nombreArchivo = url;
+              this.loadService.loading$.emit({ active: false });
+            }
+            console.log(this.nombreArchivo);
+          });
+        })
+      )
+      .subscribe((url: any) => {
+        if (url) {
+          console.log(url);
+        }
+      });
   }
 }

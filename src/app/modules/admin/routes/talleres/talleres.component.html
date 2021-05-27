@@ -85,18 +85,40 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6" *ngFor="let item of talleres$ | async">
+    <div
+      class="col-md-6"
+      *ngFor="let item of talleres$ | async"
+      [hidden]="filter(item.payload.doc.data().user)"
+    >
       <article class="entry">
+        <div
+          class="btn-group float-right"
+          role="group"
+          aria-label="Basic example"
+          style="position: absolute; right: 3%"
+        >
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="delete(item.payload.doc.id)"
+          >
+            Eliminar
+          </button>
+        </div>
         <div class="entry-img">
-          <img [src]="item.urlImage" alt="" class="img-fluid" />
+          <img
+            [src]="item.payload.doc.data().urlImage"
+            alt=""
+            class="img-fluid"
+          />
         </div>
 
         <h2 class="entry-title">
-          <a href="blog-single.html">{{ item.title }}</a>
+          <a href="blog-single.html">{{ item.payload.doc.data().title }}</a>
         </h2>
         <div class="entry-content">
           <p>
-            {{ item.description }}
+            {{ item.payload.doc.data().description }}
           </p>
         </div>
       </article>

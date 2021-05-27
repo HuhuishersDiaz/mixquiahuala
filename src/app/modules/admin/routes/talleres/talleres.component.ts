@@ -16,6 +16,7 @@ declare var $: any;
 })
 export class TalleresComponent implements OnInit {
   public nombreArchivo: string = '';
+  emailUser: any;
   constructor(
     private authserv: AuthService,
     private db: AngularFirestore,
@@ -32,7 +33,7 @@ export class TalleresComponent implements OnInit {
     ['code', 'blockquote'],
     ['ordered_list', 'bullet_list'],
     [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
-    ['link', 'image', 'unlink'],
+    ['link', 'image'],
     ['text_color', 'background_color'],
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
@@ -71,10 +72,11 @@ export class TalleresComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.emailUser = this.authserv.isLoggedIn;
     this.editor = new Editor();
     const doc = this.db.collection('talleres');
 
-    this.talleres$ = doc.valueChanges();
+    this.talleres$ = doc.snapshotChanges();
   }
 
   ngOnDestroy(): void {
@@ -110,5 +112,18 @@ export class TalleresComponent implements OnInit {
           console.log(url);
         }
       });
+  }
+
+  filter(user: string): boolean {
+    if (this.emailUser.email == user) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  delete(id: string) {
+    const res = this.db.collection('talleres').doc(id).delete();
+    console.log(res);
   }
 }

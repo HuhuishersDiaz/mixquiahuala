@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Editor, Toolbar } from 'ngx-editor';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { FirebasestorageService } from 'src/app/core/services/firebasestorage.service';
+import { LoadingService } from 'src/app/core/services/loading.service';
 declare var $: any;
 @Component({
   selector: 'app-servicios',
@@ -12,9 +16,12 @@ declare var $: any;
 })
 export class ServiciosComponent implements OnInit {
   public nombreArchivo: string = '';
+  emailUser: any;
   constructor(
-    private firebaseStorage: FirebasestorageService,
-    private db: AngularFirestore
+    private authserv: AuthService,
+    private db: AngularFirestore,
+    private storage: AngularFireStorage,
+    private loadService: LoadingService
   ) {}
 
   servicios$ = new Observable<any>();
@@ -26,7 +33,7 @@ export class ServiciosComponent implements OnInit {
     ['code', 'blockquote'],
     ['ordered_list', 'bullet_list'],
     [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
-    ['link', 'image', 'unlink'],
+    ['link', 'image'],
     ['text_color', 'background_color'],
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
@@ -61,23 +68,19 @@ export class ServiciosComponent implements OnInit {
       let newService = this.db.collection('servicios').doc().ref;
       // let filename = `${newService.id}.${extension}`;
       let data = this.frmnewService.value;
-      let referencia = this.firebaseStorage.getInfoFile(this.nombreArchivo);
-
-      let tarea = this.firebaseStorage.uploadfile(this.nombreArchivo, archivo);
-
-      referencia.getDownloadURL().subscribe((URL) => {
-        data.urlImage = URL;
-        console.log(URL);
-        newService.set(data);
-      });
+      data.urlImage = this.nombreArchivo;
+      data.user = this.authserv.userData.email;
+      newService.set(data);
     }
   }
 
   ngOnInit(): void {
+    this.emailUser = this.authserv.isLoggedIn;
+
     this.editor = new Editor();
     const doc = this.db.collection('servicios');
 
-    this.servicios$ = doc.valueChanges();
+    this.servicios$ = doc.snapshotChanges();
   }
 
   ngOnDestroy(): void {
@@ -85,6 +88,46 @@ export class ServiciosComponent implements OnInit {
   }
 
   public cambioArchivo(event: any) {
-    this.nombreArchivo = event.target.files[0].name;
+    this.loadService.loading$.emit({
+      active: true,
+      text: 'Cargando imagen ...',
+    });
+    var n = Date.now();
+    const file = event.target.files[0];
+    const filePath = `galeria/${n}`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(`galeria/${n}`, file);
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          const downloadURL = fileRef.getDownloadURL();
+          downloadURL.subscribe((url: any) => {
+            if (url) {
+              this.nombreArchivo = url;
+              this.loadService.loading$.emit({ active: false });
+            }
+            console.log(this.nombreArchivo);
+          });
+        })
+      )
+      .subscribe((url: any) => {
+        if (url) {
+          console.log(url);
+        }
+      });
+  }
+
+  filter(user: string): boolean {
+    if (this.emailUser.email == user) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async delete(id: string) {
+    const res = await this.db.collection('servicios').doc(id).delete();
+    console.log(res);
   }
 }

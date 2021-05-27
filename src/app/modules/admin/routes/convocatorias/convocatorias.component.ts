@@ -24,6 +24,7 @@ declare var $: any;
 export class ConvocatoriasComponent implements OnInit {
   public nombreArchivo: string = '';
   private userData: any;
+  emailUser: any;
   constructor(
     private authserv: AuthService,
     private db: AngularFirestore,
@@ -82,10 +83,12 @@ export class ConvocatoriasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.emailUser = this.authserv.isLoggedIn;
+
     this.editor = new Editor();
     const doc = this.db.collection('convocatorias');
 
-    this.convocatorias$ = doc.valueChanges();
+    this.convocatorias$ = doc.snapshotChanges();
   }
 
   ngOnDestroy(): void {
@@ -121,5 +124,18 @@ export class ConvocatoriasComponent implements OnInit {
           console.log(url);
         }
       });
+  }
+
+  filter(user: string): boolean {
+    if (this.emailUser.email == user) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async delete(id: string) {
+    const res = await this.db.collection('convocatorias').doc(id).delete();
+    console.log(res);
   }
 }

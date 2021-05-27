@@ -47,10 +47,18 @@
     <div class="form-row">
       <div class="form-group col-md-4">
         <label>Imagen</label>
-        <input formControlName="Imagen" type="file" class="form-control" />
+        <input
+          formControlName="Imagen"
+          type="file"
+          class="form-control"
+          (change)="cambioArchivo($event)"
+        />
         <div class="text-center">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mixquiahuala%2C_palacio_municipal.JPG/375px-Mixquiahuala%2C_palacio_municipal.JPG"
+            [src]="
+              nombreArchivo ||
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mixquiahuala%2C_palacio_municipal.JPG/375px-Mixquiahuala%2C_palacio_municipal.JPG'
+            "
             class="rounded-circle"
             width="300"
           />
@@ -58,7 +66,7 @@
       </div>
       <div class="col-md-8">
         <div class="form-group">
-          <label>Nombre</label>
+          <label>Nombre Completo</label>
           <input formControlName="Nombre" type="text" class="form-control" />
         </div>
         <div class="form-row">
@@ -69,7 +77,7 @@
           <div class="form-group col-md-6">
             <label for="inputPassword4">FECHA DE EXTRAVÍO /SUSTRACCIÓN</label>
             <input
-              formControlName="FECHA_DE_EXTRAVÍO"
+              formControlName="FECHA_DE_EXTRAVIO"
               type="datetime-local"
               class="form-control"
               id="inputPassword4"
@@ -106,7 +114,7 @@
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="inputCity">COMPLEXIÓN</label>
-        <input type="text" class="form-control" formControlName="COMPLEXIÓN" />
+        <input type="text" class="form-control" formControlName="COMPLEXION" />
       </div>
       <div class="form-group col-md-6">
         <label for="inputState">ESTATURA</label>
@@ -208,7 +216,7 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" class="btn btn-primary">Registrar</button>
   </form>
 </ng-template>
 <ng-template #otros>
@@ -221,10 +229,18 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           <label>Imagen</label>
-          <input type="file" class="form-control" formControlName="Imagen" />
+          <input
+            type="file"
+            class="form-control"
+            formControlName="Imagen"
+            (change)="cambioArchivo($event)"
+          />
           <div class="text-center">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mixquiahuala%2C_palacio_municipal.JPG/375px-Mixquiahuala%2C_palacio_municipal.JPG"
+              [src]="
+                nombreArchivo ||
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mixquiahuala%2C_palacio_municipal.JPG/375px-Mixquiahuala%2C_palacio_municipal.JPG'
+              "
               class="rounded-circle"
               width="300"
             />
@@ -232,10 +248,10 @@
         </div>
         <div class="col-md-8">
           <div class="form-group">
-            <label>Nombre</label>
+            <label>Nombre completo </label>
             <input type="text" class="form-control" formControlName="Nombre" />
           </div>
-          <div class="form-row">
+          <!-- <div class="form-row">
             <div class="form-group col-md-6">
               <label>Apellido Paterno</label>
               <input
@@ -252,7 +268,7 @@
                 formControlName="Apellido_Materno"
               />
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label>Direccion</label>
             <input
@@ -303,7 +319,7 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">Sign in</button>
+      <button type="submit" class="btn btn-primary">Registrar</button>
     </form>
   </ng-template>
   <ng-template #otros>

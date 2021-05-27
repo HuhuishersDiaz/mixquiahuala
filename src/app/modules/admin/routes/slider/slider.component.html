@@ -88,8 +88,12 @@
 </div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-6" *ngFor="let item of convocatorias$ | async">
+  <div class="row" *ngIf="convocatorias$ | async as datos; else sinData">
+    <div
+      class="col-md-6"
+      *ngFor="let item of convocatorias$ | async"
+      [hidden]="filter(item.payload.doc.data().user)"
+    >
       <article class="entry">
         <div
           class="btn-group float-right"
@@ -128,9 +132,17 @@
         <div class="entry-content">
           <p>
             {{ item.payload.doc.data().description }}
+            {{ item.payload.doc.data().user }}
+            <!-- {{ emailUser.email }} -->
           </p>
         </div>
       </article>
     </div>
   </div>
+  <ng-template class="row text-center" #sinData>
+    <div class="col-12 text-center">
+      <br /><br />
+      <h3>No hay datos que mostrar</h3>
+    </div>
+  </ng-template>
 </div>

@@ -4,6 +4,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 declare var $: any;
 @Component({
@@ -16,10 +17,11 @@ export class SliderComponent implements OnInit {
   private nombreArchivo: string = '';
   private id: string = '';
   public reset: boolean = false;
-
+  public emailUser: any;
   constructor(
     private db: AngularFirestore,
     private storage: AngularFireStorage,
+    private authserv: AuthService,
     private loadService: LoadingService
   ) {}
 
@@ -41,10 +43,12 @@ export class SliderComponent implements OnInit {
     link: new FormControl(''),
   });
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.emailUser = this.authserv.isLoggedIn;
+    console.log();
     const doc = this.db.collection('sliders');
 
-    this.convocatorias$.pipe(map((c) => console.log(c)));
+    // this.convocatorias$.pipe(map((c) => console.log(c)));
     this.convocatorias$ = doc.snapshotChanges();
   }
 
@@ -80,7 +84,7 @@ export class SliderComponent implements OnInit {
           data.urlImage = url;
           // let filename = `${newConvocatoria.id}.${extension}`;
           data.image = null;
-
+          data.user = this.authserv.userData.email;
           newConvocatoria.set(data);
         }
 
@@ -144,5 +148,13 @@ export class SliderComponent implements OnInit {
   async delete(id: string) {
     const res = await this.db.collection('sliders').doc(id).delete();
     console.log(res);
+  }
+
+  filter(user: string): boolean {
+    if (this.emailUser.email == user) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

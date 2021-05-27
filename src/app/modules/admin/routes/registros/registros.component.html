@@ -1,1 +1,62 @@
-<p>registros works!</p>
+<table class="table" *ngIf="emailUser.email == 'imm@mixquiahuala.com'">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>fecha de estravio</th>
+      <th>edad</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of Registros$ | async; let i = index">
+      <th>{{ i + 1 }}</th>
+      <td>{{ item.payload.doc.data().Nombre }}</td>
+      <td>{{ item.payload.doc.data().FECHA_DE_EXTRAVIO }}</td>
+      <td>{{ item.payload.doc.data().Edad }}</td>
+
+      <td></td>
+      <td>
+        <div class="btn-group" role="group" aria-label="">
+          <button type="button" class="btn btn-success">Ver</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="delete(item.payload.doc.id)"
+          >
+            Eliminar
+          </button>
+          <!-- <button type="button" class="btn btn-success"></button> -->
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table" *ngIf="emailUser.email == 'injuve@mixquiahuala.com'">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of Registros$ | async; let i = index">
+      <th>{{ i + 1 }}</th>
+      <td>{{ item.payload.doc.data().Nombre }}</td>
+      <td>
+        <div class="btn-group" role="group" aria-label="">
+          <button type="button" class="btn btn-success">Ver</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="delete(item.payload.doc.id)"
+          >
+            Eliminar
+          </button>
+          <!-- <button type="button" class="btn btn-success"></button> -->
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -7,6 +7,7 @@ import { map, finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FirebasestorageService } from 'src/app/core/services/firebasestorage.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 declare var $: any;
 @Component({
   selector: 'app-galeria',
@@ -20,11 +21,13 @@ export class GaleriaComponent implements OnInit {
   // title = 'cloudsSorage';
   selectedFile: File | undefined;
   fb: any;
+  public emailUser: any;
   downloadURL: Observable<string> | undefined;
 
   constructor(
     private firebaseStorage: FirebasestorageService,
     private db: AngularFirestore,
+    private authserv: AuthService,
     private storage: AngularFireStorage,
     private loadService: LoadingService
   ) {}
@@ -52,14 +55,15 @@ export class GaleriaComponent implements OnInit {
 
       let data = this.frmnewImageGaleri.value;
       data.urlImage = this.fb;
+      data.user = this.emailUser.email;
       newImageGaleri.set(data);
     }
   }
 
   ngOnInit(): void {
+    this.emailUser = this.authserv.isLoggedIn;
     const doc = this.db.collection('galeria');
-
-    this.Galeria$ = doc.valueChanges();
+    this.Galeria$ = doc.snapshotChanges();
   }
 
   ngOnDestroy(): void {}
@@ -93,5 +97,17 @@ export class GaleriaComponent implements OnInit {
           console.log(url);
         }
       });
+  }
+
+  filter(user: string): boolean {
+    if (this.emailUser.email == user) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  delete(id: string) {
+    const res = this.db.collection('galeria').doc(id).delete();
+    console.log(res);
   }
 }
